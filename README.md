@@ -31,4 +31,4 @@ A web application that enables students to share skills, exchange knowledge, tra
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/skill-up-galaxy.git
+   git clone https://github.com/Adrija052212/skill-up-galaxy.git
