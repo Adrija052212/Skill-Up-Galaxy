@@ -66,6 +66,9 @@ let activityLogs = {
     lectures: []
 };
 
+// API Base URL
+const API_BASE_URL = 'http://localhost:5000/api';
+
 // DOM Elements
 const skillsGrid = document.getElementById('skillsGrid');
 const notesList = document.getElementById('notesList');
@@ -89,26 +92,23 @@ const submitRequestBtn = document.getElementById('submitRequestBtn');
 const saveNoteBtn = document.getElementById('saveNoteBtn');
 const pdfUpload = document.getElementById('pdfUpload');
 const fileName = document.getElementById('fileName');
-const summarizeBtn = document.getElementById('summarizeBtn');
 const chatbotBtn = document.querySelector('.chatbot-btn');
 const chatbotModal = document.getElementById('chatbotModal');
 const chatbotMessages = document.getElementById('chatbotMessages');
 const chatbotQuery = document.getElementById('chatbotQuery');
 const sendChatbotQuery = document.getElementById('sendChatbotQuery');
-const summarizeNoteBtn = document.getElementById('summarizeNoteBtn');
-const summarizeVideoBtn = document.getElementById('summarizeVideoBtn');
 
 // Initialize the app
-document.addEventListener('DOMContentLoaded', function() {
-    renderSkills();
-    renderNotes();
-    renderProgress();
+document.addEventListener('DOMContentLoaded', function () {
+    fetchSkills();
+    fetchNotes();
+    fetchProgress();
     renderGoals();
     setupEventListeners();
     initializeChart();
-    
+
     // Set up PDF upload display
-    pdfUpload.addEventListener('change', function(e) {
+    pdfUpload.addEventListener('change', function () {
         if (this.files.length > 0) {
             fileName.textContent = this.files[0].name;
         } else {
@@ -117,10 +117,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Fetch skills from the backend
+async function fetchSkills() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/skills`);
+        if (!response.ok) throw new Error('Failed to fetch skills');
+        const skills = await response.json();
+        renderSkills(skills);
+    } catch (err) {
+        console.error('Error fetching skills:', err);
+        alert('Unable to load skills. Please try again later.');
+    }
+}
+
 // Render skills to the page
-function renderSkills() {
+function renderSkills(skills) {
     skillsGrid.innerHTML = '';
-    skillsData.forEach(skill => {
+    skills.forEach(skill => {
         const skillCard = document.createElement('div');
         skillCard.className = 'skill-card';
         skillCard.innerHTML = `
@@ -140,10 +153,23 @@ function renderSkills() {
     });
 }
 
+// Fetch notes from the backend
+async function fetchNotes() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/notes`);
+        if (!response.ok) throw new Error('Failed to fetch notes');
+        const notes = await response.json();
+        renderNotes(notes);
+    } catch (err) {
+        console.error('Error fetching notes:', err);
+        alert('Unable to load notes. Please try again later.');
+    }
+}
+
 // Render notes to the page
-function renderNotes() {
+function renderNotes(notes) {
     notesList.innerHTML = '';
-    notesData.forEach(note => {
+    notes.forEach(note => {
         const noteItem = document.createElement('div');
         noteItem.className = 'note-item';
         noteItem.innerHTML = `
@@ -160,10 +186,24 @@ function renderNotes() {
         notesList.appendChild(noteItem);
     });
 }
+
+// Fetch progress data from the backend
+async function fetchProgress() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/progress`);
+        if (!response.ok) throw new Error('Failed to fetch progress');
+        const progress = await response.json();
+        renderProgress(progress.subjects);
+    } catch (err) {
+        console.error('Error fetching progress:', err);
+        alert('Unable to load progress data. Please try again later.');
+    }
+}
+
 // Render progress stats
-function renderProgress() {
+function renderProgress(subjects) {
     progressStats.innerHTML = '';
-    progressData.subjects.forEach(subject => {
+    subjects.forEach(subject => {
         const progressItem = document.createElement('div');
         progressItem.className = 'progress-item';
         progressItem.innerHTML = `
@@ -264,7 +304,6 @@ function setupEventListeners() {
     submitSkillBtn.addEventListener('click', addNewSkill);
     submitRequestBtn.addEventListener('click', addNewRequest);
     saveNoteBtn.addEventListener('click', saveNewNote);
-    summarizeBtn.addEventListener('click', () => summarizeContent());
 
     // Goal handling
     goalInput.addEventListener('keypress', function(e) {
@@ -281,10 +320,6 @@ function setupEventListeners() {
     });
 
     sendChatbotQuery.addEventListener('click', sendChatbotMessage);
-
-    // Summarize buttons
-    summarizeNoteBtn.addEventListener('click', () => summarizeContent('note'));
-    summarizeVideoBtn.addEventListener('click', () => summarizeContent('video'));
 }
 
 // Add new skill
@@ -307,7 +342,7 @@ function addNewSkill() {
         };
 
         skillsData.push(newSkill);
-        renderSkills();
+        renderSkills(skillsData);
         offerSkillModal.style.display = 'none';
 
         // Reset form
@@ -363,31 +398,11 @@ function saveNewNote() {
         };
 
         notesData.push(newNote);
-        renderNotes();
+        renderNotes(notesData);
 
         // Reset form
         document.getElementById('noteForm').reset();
         fileName.textContent = 'No file chosen';
-    }
-}
-
-// Summarize content
-function summarizeContent(type) {
-    let content;
-    if (type === 'note') {
-        content = document.getElementById('noteContent').value;
-    } else if (type === 'video') {
-        content = "Video transcription would go here";
-    } else {
-        content = document.getElementById('summarizeText').value;
-    }
-
-    if (content) {
-        // In a real app, this would call an API
-        const summary = "This is a simulated summary of the content. In a real application, this would be generated by an AI service.";
-        alert(`Summary:\n\n${summary}`);
-    } else {
-        alert(`Please enter some ${type === 'note' ? 'note content' : type === 'video' ? 'video URL' : 'text'} to summarize.`);
     }
 }
 
@@ -423,8 +438,75 @@ function addChatbotMessage(message, sender) {
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 }
 
+// Handle Login
+async function handleLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert('Login successful!');
+            localStorage.setItem('token', data.token);
+            authModal.style.display = 'none';
+        } else {
+            alert(data.message || 'Login failed');
+        }
+    } catch (err) {
+        console.error('Error during login:', err);
+        alert('An error occurred during login. Please try again.');
+    }
+}
+
+// Handle Sign Up
+async function handleSignUp() {
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+
+    if (!name || !email || !password) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert('Sign up successful!');
+            localStorage.setItem('token', data.token);
+            authModal.style.display = 'none';
+        } else {
+            alert(data.message || 'Sign up failed');
+        }
+    } catch (err) {
+        console.error('Error during sign up:', err);
+        alert('An error occurred during sign up. Please try again.');
+    }
+}
+
+// Event Listeners for Login and Sign Up
+document.getElementById('submitLogin').addEventListener('click', handleLogin);
+document.getElementById('submitSignup').addEventListener('click', handleSignUp);
+
 // Close modals when clicking outside
-window.addEventListener('click', function(event) {
+window.addEventListener('click', function (event) {
     if (event.target.classList.contains('modal')) {
         event.target.style.display = 'none';
     }
