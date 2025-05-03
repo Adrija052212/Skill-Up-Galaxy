@@ -125,7 +125,7 @@ function renderNotes(notes) {
     });
 }
 
-// Fetch progress data from the backend
+// Fetch progress data and render the graph
 async function fetchProgress() {
     try {
         const response = await fetch(`${API_BASE_URL}/progress`);
@@ -138,7 +138,7 @@ async function fetchProgress() {
     }
 }
 
-// Render progress stats
+// Render the progress graph
 function renderProgress(subjects) {
     const ctx = document.getElementById('progressChart').getContext('2d');
     new Chart(ctx, {
@@ -148,7 +148,7 @@ function renderProgress(subjects) {
             datasets: [{
                 label: 'Progress (%)',
                 data: subjects.map(subject => subject.progress),
-                backgroundColor: '#4caf50'
+                backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#e91e63', '#9c27b0']
             }]
         },
         options: {
@@ -156,6 +156,15 @@ function renderProgress(subjects) {
             maintainAspectRatio: false
         }
     });
+
+    // Update the Progress Summary Box
+    const progressStats = document.querySelector('.progress-stats ul');
+    progressStats.innerHTML = subjects.map(subject => `
+        <li>
+            <span class="subject">${subject.name}</span>
+            <span class="percentage">${subject.progress}%</span>
+        </li>
+    `).join('');
 }
 
 // Handle Login
@@ -286,3 +295,6 @@ addGoalBtn?.addEventListener('click', () => {
     // Clear the input
     goalInput.value = '';
 });
+
+// Call fetchProgress on page load
+document.addEventListener('DOMContentLoaded', fetchProgress);

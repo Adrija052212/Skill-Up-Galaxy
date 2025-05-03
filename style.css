@@ -428,70 +428,6 @@ nav ul li a:hover {
     height: 400px;
 }
 
-/* Goals Section */
-.goals {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-}
-
-.goals h3 {
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-}
-
-.goals input {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-.goals button {
-    background-color: var(--success-color);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-bottom: 1rem;
-}
-
-.goals button:hover {
-    background-color: #218838;
-}
-
-.goals ul {
-    list-style: none;
-    padding: 0;
-}
-
-.goals li {
-    padding: 0.8rem;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.goals li button {
-    background-color: var(--danger-color);
-    color: white;
-    border: none;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.8rem;
-}
-
-.goals li button:hover {
-    background-color: #c82333;
-}
-
 .progress-stats {
     background-color: white;
     border-radius: 8px;
@@ -506,6 +442,7 @@ nav ul li a:hover {
 
 .progress-stats ul {
     list-style: none;
+    padding: 0;
 }
 
 .progress-stats li {

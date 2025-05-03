@@ -112,15 +112,27 @@
         <section id="progress" class="card animate__animated animate__fadeIn">
             <h2>Progress Tracker</h2>
             <div class="progress-container">
+                <!-- Graph Area -->
                 <div class="progress-chart">
                     <canvas id="progressChart"></canvas>
                 </div>
-                <div class="goals">
-                    <h3>Set Your Goals</h3>
-                    <input type="text" id="goalInput" placeholder="Enter your goal (e.g., Learn React)">
-                    <button id="addGoalBtn">Add Goal</button>
-                    <ul id="goalList">
-                        <!-- Goals will be dynamically added here -->
+
+                <!-- Progress Summary Box -->
+                <div class="progress-stats">
+                    <h3>Progress Summary</h3>
+                    <ul>
+                        <li>
+                            <span class="subject">Math</span>
+                            <span class="percentage">80%</span>
+                        </li>
+                        <li>
+                            <span class="subject">Science</span>
+                            <span class="percentage">70%</span>
+                        </li>
+                        <li>
+                            <span class="subject">History</span>
+                            <span class="percentage">90%</span>
+                        </li>
                     </ul>
                 </div>
             </div>
