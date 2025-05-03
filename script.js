@@ -23,6 +23,10 @@ const fileName = document.getElementById('fileName');
 const skillsGrid = document.getElementById('skillsGrid');
 const notesList = document.getElementById('notesList');
 const progressStats = document.getElementById('progressStats');
+const chatbotBtn = document.querySelector('.chatbot-btn');
+const chatbotModal = document.getElementById('chatbotModal');
+const closeChatbotBtn = chatbotModal.querySelector('.close-btn');
+const searchInput = document.querySelector('.search-bar input');
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function () {
@@ -120,7 +124,7 @@ function renderNotes(notes) {
 async function fetchProgress() {
     try {
         const response = await fetch(`${API_BASE_URL}/progress`);
-        if (!response.ok) throw new Error('Failed to fetch progress');
+        if (!response.ok) throw new Error(`Failed to fetch progress: ${response.status}`);
         const progress = await response.json();
         renderProgress(progress.subjects);
     } catch (err) {
@@ -222,4 +226,30 @@ window.addEventListener('click', function (event) {
     if (event.target.classList.contains('modal')) {
         event.target.style.display = 'none';
     }
+});
+
+// Chatbot functionality
+chatbotBtn?.addEventListener('click', () => {
+    chatbotModal?.classList.toggle('visible'); // Use CSS class for visibility
+});
+
+closeChatbotBtn?.addEventListener('click', () => {
+    chatbotModal?.classList.remove('visible');
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target === chatbotModal) {
+        chatbotModal?.classList.remove('visible');
+    }
+});
+
+// Search functionality for skills
+searchInput?.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    const skills = skillsGrid?.querySelectorAll('.skill-card'); // Assuming each skill is a .skill-card
+
+    skills?.forEach(skill => {
+        const skillName = skill.textContent.toLowerCase();
+        skill.style.display = skillName.includes(query) ? 'block' : 'none';
+    });
 });
