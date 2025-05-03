@@ -135,20 +135,21 @@ async function fetchProgress() {
 
 // Render progress stats
 function renderProgress(subjects) {
-    progressStats.innerHTML = '';
-    subjects.forEach(subject => {
-        const progressItem = document.createElement('div');
-        progressItem.className = 'progress-item';
-        progressItem.innerHTML = `
-            <div class="progress-header">
-                <span class="subject-name">${subject.name}</span>
-                <span class="percentage">${subject.percentage}%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: ${subject.percentage}%"></div>
-            </div>
-        `;
-        progressStats.appendChild(progressItem);
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: subjects.map(subject => subject.name),
+            datasets: [{
+                label: 'Progress (%)',
+                data: subjects.map(subject => subject.progress),
+                backgroundColor: '#4caf50'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
     });
 }
 

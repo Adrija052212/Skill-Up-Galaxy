@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skill Up Galaxy</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <header class="animate__animated animate__fadeInDown">
@@ -110,20 +111,8 @@
 
         <section id="progress" class="card animate__animated animate__fadeIn">
             <h2>Progress Tracker</h2>
-            <div class="progress-container">
-                <div class="progress-chart">
-                    <canvas id="progressChart" width="1190" height="595" style="display: block; box-sizing: border-box; height: 476px; width: 952px;"></canvas>
-                </div>
-                <div class="goals">
-                    <h3>Set Learning Goal</h3>
-                    <input type="text" id="goalInput" placeholder="Enter your learning goal">
-                    <button onclick="addGoal()">Add Goal</button>
-                    <ul id="goalList"></ul>
-                </div>
-            </div>
-            <div class="progress-stats">
-                <h3>Subjects Overview</h3>
-                <ul id="progressStats"></ul>
+            <div class="progress-chart">
+                <canvas id="progressChart"></canvas>
             </div>
         </section>
 
