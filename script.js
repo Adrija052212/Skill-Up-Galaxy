@@ -28,6 +28,11 @@ const chatbotModal = document.getElementById('chatbotModal');
 const closeChatbotBtn = chatbotModal.querySelector('.close-btn');
 const searchInput = document.querySelector('.search-bar input');
 
+// DOM Elements for Goals
+const goalInput = document.getElementById('goalInput');
+const addGoalBtn = document.getElementById('addGoalBtn');
+const goalList = document.getElementById('goalList');
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function () {
     if (!authModal || !skillsGrid || !notesList || !progressStats) {
@@ -253,4 +258,31 @@ searchInput?.addEventListener('input', () => {
         const skillName = skill.textContent.toLowerCase();
         skill.style.display = skillName.includes(query) ? 'block' : 'none';
     });
+});
+
+// Add Goal Event Listener
+addGoalBtn?.addEventListener('click', () => {
+    const goalText = goalInput.value.trim();
+    if (goalText === '') {
+        alert('Please enter a goal.');
+        return;
+    }
+
+    // Create a new goal item
+    const goalItem = document.createElement('li');
+    goalItem.innerHTML = `
+        ${goalText}
+        <button class="remove-goal-btn">Remove</button>
+    `;
+
+    // Add remove functionality
+    goalItem.querySelector('.remove-goal-btn').addEventListener('click', () => {
+        goalItem.remove();
+    });
+
+    // Append to the goal list
+    goalList.appendChild(goalItem);
+
+    // Clear the input
+    goalInput.value = '';
 });

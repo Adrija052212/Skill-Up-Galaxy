@@ -111,8 +111,18 @@
 
         <section id="progress" class="card animate__animated animate__fadeIn">
             <h2>Progress Tracker</h2>
-            <div class="progress-chart">
-                <canvas id="progressChart"></canvas>
+            <div class="progress-container">
+                <div class="progress-chart">
+                    <canvas id="progressChart"></canvas>
+                </div>
+                <div class="goals">
+                    <h3>Set Your Goals</h3>
+                    <input type="text" id="goalInput" placeholder="Enter your goal (e.g., Learn React)">
+                    <button id="addGoalBtn">Add Goal</button>
+                    <ul id="goalList">
+                        <!-- Goals will be dynamically added here -->
+                    </ul>
+                </div>
             </div>
         </section>
 

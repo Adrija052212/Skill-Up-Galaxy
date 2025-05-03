@@ -428,6 +428,7 @@ nav ul li a:hover {
     height: 400px;
 }
 
+/* Goals Section */
 .goals {
     background-color: white;
     border-radius: 8px;
@@ -466,6 +467,7 @@ nav ul li a:hover {
 
 .goals ul {
     list-style: none;
+    padding: 0;
 }
 
 .goals li {
