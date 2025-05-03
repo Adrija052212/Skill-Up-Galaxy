@@ -1,25 +1,15 @@
 const express = require('express');
-const router = express.Router();
 const Skill = require('../models/Skill');
+
+const router = express.Router();
 
 // Get all skills
 router.get('/', async (req, res) => {
     try {
-        const skills = await Skill.find();
+        const skills = await Skill.find().populate('user', 'name avatar rating');
         res.json(skills);
     } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-// Add a new skill
-router.post('/', async (req, res) => {
-    const skill = new Skill(req.body);
-    try {
-        const newSkill = await skill.save();
-        res.status(201).json(newSkill);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: 'Error fetching skills' });
     }
 });
 

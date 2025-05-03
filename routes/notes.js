@@ -1,25 +1,15 @@
 const express = require('express');
-const router = express.Router();
 const Note = require('../models/Note');
+
+const router = express.Router();
 
 // Get all notes
 router.get('/', async (req, res) => {
     try {
-        const notes = await Note.find();
+        const notes = await Note.find().populate('user', 'name');
         res.json(notes);
     } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-// Add a new note
-router.post('/', async (req, res) => {
-    const note = new Note(req.body);
-    try {
-        const newNote = await note.save();
-        res.status(201).json(newNote);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: 'Error fetching notes' });
     }
 });
 

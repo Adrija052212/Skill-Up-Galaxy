@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const app = express();
@@ -14,33 +13,31 @@ if (!process.env.MONGO_URI) {
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-// Import Routes
+// MongoDB Connection
+mongoose
+    .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch((err) => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1); // Exit the process if the database connection fails
+    });
+
+// Routes
+const authRoutes = require('./routes/auth');
 const skillRoutes = require('./routes/skills');
 const noteRoutes = require('./routes/notes');
 const progressRoutes = require('./routes/progress');
-const authRoutes = require('./routes/auth');
 
-// Routes
-app.use('/api/skills', skillRoutes);
-app.use('/api/notes', noteRoutes);
-app.use('/api/progress', progressRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/skills', skillRoutes);
+app.use('/api/v1/notes', noteRoutes);
+app.use('/api/v1/progress', progressRoutes);
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log('MongoDB connected');
-
-        // Start Server
-        const PORT = process.env.PORT || 5000;
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-    })
-    .catch(err => {
-        console.error('Error connecting to MongoDB:', err);
-        process.exit(1); // Exit the process if the database connection fails
-    });
+// Start Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Graceful Shutdown
 process.on('SIGINT', async () => {
