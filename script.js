@@ -33,6 +33,10 @@ const goalInput = document.getElementById('goalInput');
 const addGoalBtn = document.getElementById('addGoalBtn');
 const goalList = document.getElementById('goalList');
 
+// DOM Elements for Modals
+const loginModal = document.getElementById('loginModal');
+const signupModal = document.getElementById('signupModal');
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function () {
     if (!authModal || !skillsGrid || !notesList || !progressStats) {
@@ -234,6 +238,30 @@ async function handleSignUp() {
 // Event Listeners for Login and Sign Up
 document.getElementById('submitLogin')?.addEventListener('click', handleLogin);
 document.getElementById('submitSignup')?.addEventListener('click', handleSignUp);
+
+// Show Login Modal
+loginBtn?.addEventListener('click', () => {
+    loginModal.style.display = 'block';
+});
+
+// Show Sign Up Modal
+signupBtn?.addEventListener('click', () => {
+    signupModal.style.display = 'block';
+});
+
+// Close Modals
+closeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        loginModal.style.display = 'none';
+        signupModal.style.display = 'none';
+    });
+});
+
+// Close Modals on Outside Click
+window.addEventListener('click', (event) => {
+    if (event.target === loginModal) loginModal.style.display = 'none';
+    if (event.target === signupModal) signupModal.style.display = 'none';
+});
 
 // Close modals when clicking outside
 window.addEventListener('click', function (event) {

@@ -695,16 +695,12 @@ nav ul li a:hover {
     align-items: center;
 }
 
-.modal.visible {
-    display: block;
-}
-
 .modal-content {
     background-color: white;
     padding: 2rem;
     border-radius: 8px;
     width: 90%;
-    max-width: 500px;
+    max-width: 400px;
     position: relative;
 }
 
@@ -717,25 +713,12 @@ nav ul li a:hover {
     color: #777;
 }
 
-.modal h2 {
-    margin-bottom: 1.5rem;
-    color: var(--primary-color);
-}
-
-.modal input,
-.modal select,
-.modal textarea {
+.modal input {
     width: 100%;
     padding: 0.8rem;
     margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 1rem;
-}
-
-.modal textarea {
-    min-height: 100px;
-    resize: vertical;
 }
 
 .modal button {
