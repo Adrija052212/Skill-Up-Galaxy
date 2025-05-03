@@ -22,7 +22,7 @@ const pdfUpload = document.getElementById('pdfUpload');
 const fileName = document.getElementById('fileName');
 const skillsGrid = document.getElementById('skillsGrid');
 const notesList = document.getElementById('notesList');
-const progressStats = document.getElementById('progressStats');
+const progressStats = document.querySelector('.progress-stats ul');
 const chatbotBtn = document.querySelector('.chatbot-btn');
 const chatbotModal = document.getElementById('chatbotModal');
 const closeChatbotBtn = chatbotModal.querySelector('.close-btn');
@@ -138,7 +138,7 @@ async function fetchProgress() {
     }
 }
 
-// Render the progress graph
+// Render the progress graph and summary
 function renderProgress(subjects) {
     const ctx = document.getElementById('progressChart').getContext('2d');
     new Chart(ctx, {
@@ -158,7 +158,6 @@ function renderProgress(subjects) {
     });
 
     // Update the Progress Summary Box
-    const progressStats = document.querySelector('.progress-stats ul');
     progressStats.innerHTML = subjects.map(subject => `
         <li>
             <span class="subject">${subject.name}</span>
